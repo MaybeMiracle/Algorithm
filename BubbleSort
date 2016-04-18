@@ -1,0 +1,23 @@
+/*
+BubbleSort: this algorithm is stable and it takes O(n^2) comparisons.
+Taking all elements as bubbles and lighter bubbles will float.
+Step i: we needn't check elements with position bigger than i because
+after previous (i-1) process, we already sorted it.
+*/
+void swap(int *a, int *b)
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;​
+}
+void BubbleSort(vector &Array, int n)
+{ 
+    for (int i = 0; i < n; i++){ 
+        for (int j = i; j < n; j++){ 
+            if(Array[i] > Array[j]){ 
+                swap(Array[i], Array[j]);
+            } 
+        } 
+    }
+}
