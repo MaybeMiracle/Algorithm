@@ -42,14 +42,14 @@ struct Node
 
 char Map[N][N];
 int dir[10][3]={ {0,1},{0,-1},{-1,0},{1,0},{-1,-1},{-1,1},{1,-1},{1,1} };
-int n,m;
+int row, col;
 
 void BFS(int x,int y)
 {
     Node NextNode;
-	  Node CurrentNode;
+    Node CurrentNode;
     CurrentNode.x = x;
-  	CurrentNode.y = y;
+    CurrentNode.y = y;
 	
     queue<Node> q;
     q.push(CurrentNode);
@@ -60,8 +60,8 @@ void BFS(int x,int y)
         for(int i = 0; i < 8; i++){
             NextNode.x = CurrentNode.x + dir[i][0];
             NextNode.y = CurrentNode.y + dir[i][1];
-            if(NextNode.x > 0 && NextNode.x <= n && NextNode.y > 0 
-			        && NextNode.y <= m && Map[NextNode.x][NextNode.y]=='W' ){			    	
+            if(NextNode.x > 0 && NextNode.x <= row && NextNode.y > 0 
+		 && NextNode.y <= col && Map[NextNode.x][NextNode.y]=='W' ){			    	
                 q.push(NextNode);
                 Map[NextNode.x][NextNode.y] = '.';
             }
@@ -72,21 +72,21 @@ void BFS(int x,int y)
 int main()
 {
     int ans = 0;
-    while(~scanf("%d %d",&n,&m))
+    while(~scanf("%d%d", &row, &col))
     {
         getchar();
         ans = 0;
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j<= m; j++){
+        for(int i = 1; i <= row; i++){
+            for(int j = 1; j<= col; j++){
                 scanf("%c",&Map[i][j]);
-			      }  
+	    }  
             getchar();
-	     	}
+	}
         for(int i = 1; i <= n; i++){
             for(int j = 1; j <= m; j++){
-                if(Map[i][j]=='W'){
+                if(Map[i][j] == 'W'){
                     BFS(i,j);
-					          ans++;
+                    ans++;
                 }
             }
         }
