@@ -1,0 +1,88 @@
+/*
+Minimal spanning tree(minimal weight spanning tree): A minimal spanning tree is a spanning 
+tree of a connected, undirected graph. It connects all the vertices together with the minial 
+total weighting for its edges.
+*/
+
+Prim algorithm (O(n^2)): it is a greedy algorithm. The algorithm operates by building a tree with an 
+arbitrary starting vertex, then at each step we will find the minimum-weight edge that connect
+the tree to vertices and one vertice of the edge is not yet in the tree.
+
+const int INF = 10000000;
+void Prim(int u)  //vertex u is the root
+{  
+    int min;  
+    memset(LowCost, 0, sizeof(LowCost));
+    
+    for(int i = 1; i <= n; i++){  
+       if(i != u){  
+           LowCost[i] = Weight[u][i];  //minimal weight from vertex i to tree
+       }
+    }
+    
+    Visit[u] = true;  
+    
+    for(int i = 1; i <= n; i++){  
+        min = INF;  //current minimal weight
+        for(int j = 1; j <= n; j++){  
+            if(LowCost[j] < min && !Visit[j]){  
+                min = LowCost[j];  
+                k = j; //the cloest vertex to the tree
+            }  
+        }
+        
+        sum += min; //the weight of MST  
+        Visit[k] = true;  
+        
+        for(int j = 1; j <= n; j++) { 
+            if(LowCost[j] > Weight[k][j]){  
+                 LowCost[j] = Weight[k][j];  //update minimal weight from vertex i to root
+            }
+        }
+    }  
+} 
+
+Kruskal algorithm (O(eloge)): compared with prim, kruskal adds the minimum-weight edge that at least 
+one vertice of the edge is not yet in the tree.
+const int NodeNumMax = 20000;
+const int EdgeNumMax = 50000;
+ 
+struct Edge{
+    int u, v, w;
+    bool operator < (const Edge a)const 
+    { 
+        return w<a.w; 
+    }; 
+}edge[EdgeNumMax];
+int n, m;
+int pa[NodeNumMax];
+ 
+void MakeSet(){
+    for(int x = 0; x < n; x++)
+        pa[x] = x;
+}
+ 
+int FindSet(int x){
+    if(x != pa[x]){
+        pa[x] = FindSet(pa[x]);
+    }
+    return pa[x];
+}
+ 
+void Kruskal(){
+    MakeSet();
+    sort(edge, edge + m);
+    for(i = 0; i < m; i ++){
+        int x = FindSet(edge[i].u);
+        int y = FindSet(edge[i].v);
+        if(x != y){
+            pa[y] = x;
+            cout<<edge[i].u<<" "<<edge[i].v<<endl;
+        }
+    }
+}
+
+Comparison between Prim and Kruskal: 
+For 1000 nodes and 50000 edges:
+          Memory: prim needs a 1000*1000 array and kruskal needs a 50000 array
+          Time: prim takes 1000*1000 and kruskal take 50000*log(50000)
