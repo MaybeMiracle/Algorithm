@@ -1,0 +1,95 @@
+/*
+Breadth first search: bfs is for traversing or searching tree or graph data structures.
+It uses a queue instead of a stack and it checks whether a vertex has been discovered 
+before enqueueing the vertex rather than delaying this check until the vertex is dequeued 
+from the queue.
+
+Example(http://poj.org/problem?id=2386):
+Due to recent rains, water has pooled in various places in Farmer John's field, which is 
+represented by a rectangle of N x M (1 <= N <= 100; 1 <= M <= 100) squares. Each square 
+contains either water ('W') or dry land ('.'). Farmer John would like to figure out how 
+many ponds have formed in his field. A pond is a connected set of squares with water in 
+them, where a square is considered adjacent to all eight of its neighbors. 
+
+Given a diagram of Farmer John's field, determine how many ponds he has.
+
+Input:
+10 12
+W........WW.
+.WWW.....WWW
+....WW...WW.
+.........WW.
+.........W..
+..W......W..
+.W.W.....WW.
+W.W.W.....W.
+.W.W......W.
+..W.......W.
+Output
+3
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<queue>
+using namespace std;
+
+struct Node
+{
+    int x,y;
+};
+
+char Map[110][110];
+int dir[10][3]={ {0,1},{0,-1},{-1,0},{1,0},{-1,-1},{-1,1},{1,-1},{1,1} };
+int n,m;
+
+void BFS(int x,int y)
+{
+    Node NextNode;
+	  Node CurrentNode;
+    CurrentNode.x = x;
+  	CurrentNode.y = y;
+	
+    queue<Node> q;
+    q.push(CurrentNode);
+    Map[x][y] = '.';
+    while(!q.empty()){
+        CurrentNode = q.front();
+        q.pop();
+        for(int i = 0; i < 8; i++){
+            NextNode.x = CurrentNode.x + dir[i][0];
+            NextNode.y = CurrentNode.y + dir[i][1];
+            if(NextNode.x > 0 && NextNode.x <= n && NextNode.y > 0 
+			        && NextNode.y <= m && Map[NextNode.x][NextNode.y]=='W' ){			    	
+                q.push(NextNode);
+                Map[NextNode.x][NextNode.y] = '.';
+            }
+        }
+    }
+}
+
+int main()
+{
+    int ans = 0;
+    while(~scanf("%d %d",&n,&m))
+    {
+        getchar();
+        ans = 0;
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j<= m; j++){
+                scanf("%c",&Map[i][j]);
+			      }  
+            getchar();
+	     	}
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= m; j++){
+                if(Map[i][j]=='W'){
+                    BFS(i,j);
+					          ans++;
+                }
+            }
+        }
+        printf("%d\n",ans);
+    }
+    return 0;
+}
