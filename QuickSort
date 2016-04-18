@@ -1,0 +1,30 @@
+/*
+Quciksort is an unstable algorithm, it takes O(nlog(n)) comparisons and in the worst case it makes O(n^2) comparisons.
+Quicksort is a divide and conquer algorithm.
+The steps are:
+1.Pick an element, called a pivot, from the array.
+2.Partitioning: reorder the array so that all elements that are bigger than pivot come to pivot right, and all elements 
+that are smaller than pivot come to pivot left. After this partitioning, this pivot won't change its position and we get two sub-arrays.
+3.Recursively apply the above steps to the left sub-array and right sub-array until size of array is zero ot one.
+*/
+int QuickSort(vector &Array, int left, int right)
+{
+    if(left < right){
+       int key = Array[left];
+        int low = left;
+        int high = right;
+        while(low < high){
+            while(low < high && Array[high] > key){
+                high--;
+            }
+            Array[low] = Array[high];
+            while(low < high && v[low] < key){
+               low++;
+            }
+            Array[high] = Array[low];
+        }
+        Array[low] = key;
+        Quicksort(Array,left,low-1);
+        Quicksort(Array,low+1,right);
+    }
+}
