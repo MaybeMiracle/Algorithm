@@ -41,10 +41,19 @@ struct Node
 };
 
 char Map[N][N];
+bool Vis[N][N];
 int dir[10][3]={ {0,1},{0,-1},{-1,0},{1,0},{-1,-1},{-1,1},{1,-1},{1,1} };
 int row, col;
 
-void BFS(int x,int y)
+bool IsInMap(int r, int c)
+{
+    if(r >= 1 && r <= row && c >= 1 && c <= col){
+        return  true;
+    }
+    return  false;
+}
+
+void BFS(int x, int y)
 {
     Node NextNode;
     Node CurrentNode;
@@ -53,17 +62,17 @@ void BFS(int x,int y)
 	
     queue<Node> q;
     q.push(CurrentNode);
-    Map[x][y] = '.';
+    Vis[x][y] = true;
     while(!q.empty()){
         CurrentNode = q.front();
         q.pop();
         for(int i = 0; i < 8; i++){
             NextNode.x = CurrentNode.x + dir[i][0];
             NextNode.y = CurrentNode.y + dir[i][1];
-            if(NextNode.x > 0 && NextNode.x <= row && NextNode.y > 0 
-		 && NextNode.y <= col && Map[NextNode.x][NextNode.y]=='W' ){			    	
+            if(Map[NextNode.x][NextNode.y] == 'W' && !Vis[NextNode.x][NextNode.y] 
+              && IsInMap(NextNode.x, NextNode.y)){			    	
                 q.push(NextNode);
-                Map[NextNode.x][NextNode.y] = '.';
+                Vis[NextNode.x][NextNode.y] = true;
             }
         }
     }
@@ -74,6 +83,7 @@ int main()
     int ans = 0;
     while(~scanf("%d%d", &row, &col))
     {
+        memset(Vis, false, sizeof(Vis));
         getchar();
         ans = 0;
         for(int i = 1; i <= row; i++){
@@ -84,7 +94,7 @@ int main()
 	}
         for(int i = 1; i <= row; i++){
             for(int j = 1; j <= col; j++){
-                if(Map[i][j] == 'W'){
+                if(Map[i][j] == 'W' && !Vis[i][j]){
                     BFS(i,j);
                     ans++;
                 }
