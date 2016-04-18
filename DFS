@@ -1,0 +1,98 @@
+/*
+Depth first search: dfs is for traversing or searching tree or graph data structures.
+It explores as far as possible along each branch before backtracking.
+
+Example(http://poj.org/problem?id=2386):
+Due to recent rains, water has pooled in various places in Farmer John's field, which is 
+represented by a rectangle of N x M (1 <= N <= 100; 1 <= M <= 100) squares. Each square 
+contains either water ('W') or dry land ('.'). Farmer John would like to figure out how 
+many ponds have formed in his field. A pond is a connected set of squares with water in 
+them, where a square is considered adjacent to all eight of its neighbors. 
+
+Given a diagram of Farmer John's field, determine how many ponds he has.
+
+Input:
+10 12
+W........WW.
+.WWW.....WWW
+....WW...WW.
+.........WW.
+.........W..
+..W......W..
+.W.W.....WW.
+W.W.W.....W.
+.W.W......W.
+..W.......W.
+Output
+3
+*/
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+
+using namespace std;
+
+#define N 110
+struct Node
+{
+    int x,y;
+};
+
+char Map[N][N];
+bool Vis[N][N];
+int dr[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
+int dc[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
+int row, col;
+ 
+bool IsInMap(int r, int c)
+{
+    if(r >= 1 && r <= row && c >= 1 && c <= col){
+        return  true;
+    }
+    return  false;
+}
+ 
+void DFS(int x, int y)
+{
+	Node NextNode;
+    Node CurrentNode;
+    CurrentNode.x = x;
+    CurrentNode.y = y;
+    
+    for(int i = 0; i < 8; i ++){
+        NextNode.x = CurrentNode.x + dr[i];
+        NextNode.y = CurrentNode.y + dc[i];
+        if(Map[NextNode.x][NextNode.y] == 'W' && !Vis[NextNode.x][NextNode.y] 
+            && IsInMap(NextNode.x, NextNode.y)){			    	
+            Vis[NextNode.x][NextNode.y] = true;
+            DFS(NextNode.x, NextNode.y);
+        }
+    }
+}
+ 
+int main()
+{
+	int ans = 0;
+    while(~scanf("%d%d", &row, &col)){
+        memset(Vis, false, sizeof(Vis));    
+        getchar();
+        ans = 0;
+        for(int i = 1; i <= row; i++){
+            for(int j = 1; j<= col; j++){
+                scanf("%c", &Map[i][j]);
+	          }  
+            getchar();
+     	  }
+        for(int i = 1; i <= row; i ++){
+            for(int j = 1; j <= col; j ++){
+                if(!Vis[i][j] && Map[i][j] == 'W'){
+                    Vis[i][j] = true;
+                    ans++;
+                    DFS(i, j);
+                }
+            }    
+        }
+	    	printf("%d\n",ans);  
+    }
+    return 0;
+}
