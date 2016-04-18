@@ -1,0 +1,16 @@
+/*
+InsertSort: this algorithm is stable and it takes O(n^2) comparisons.
+After (i-1) steps, we get a sorted array Array[1,i-1]. Then insert Array[i] into Array[1,i-1] and keep Array[1,i] is also sorted.
+*/
+void InsertSort(vector &Array, int n)
+{
+    for(int i = 1; i < n; i++){
+        int j = i;
+        int target = Array[i];
+        while(j > 0 && target < Array[j - 1]){
+            Array[j] = Array[j - 1];
+            j--;
+        }
+        Array[j] = target;
+    }
+}
