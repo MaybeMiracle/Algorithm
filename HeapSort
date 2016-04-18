@@ -1,0 +1,88 @@
+/*
+HeapSort: this algorithm is ubstable, it takes O(nlogn) comparisons.
+
+First, let's introduce binary heap.
+A binary heap is a heap data structure created using a binary tree. 
+It can be seen as a binary tree with two additional constraint:
+Shape property: we must know a binary heap is a complete binary tree,
+which means all levels of tree, except possibly the deepest are fully filled
+and the nodes of last level are filled from left to right.
+Heap property: all nodes are either greater than or equal to or less than or
+equal to each of its children according to a comparison predicate defined for
+the heap.
+Left subtree and right subtree are also binary heap.
+
+We always use heap by array, for node i, its parent is (i-1)/2 and its left child
+is 2*i+1 and its right child is 2*i+2.
+*/
+
+Heap operations:
+
+Insert: put new element to the end of array, then compare the element with its
+parent. If they are in the correct order, stop. If not, swap the element with its
+parent and repeat last step.
+void MinHeapFixup(int Array[], int i)
+{
+    int j, temp;
+    temp = Array[i];
+    j = (i - 1) / 2;   
+    while(j >= 0 && i != 0){
+        if (Array[j] <= temp){
+            break;
+        }
+        Array[i] = Array[j];    
+        i = j;
+        j = (i - 1) / 2;
+    }
+    Array[i] = temp;
+}
+void MinHeapAddNumber(int Array[], int n, int nNum)
+{
+    Array[n] = nNum;
+    MinHeapFixup(Array, n);
+}
+
+Extract: replace the root(Array[0]) of the heap with the last element(Array[n-1]) 
+of the last level, then compare the new root with its children. If they are in
+the order, stop. If not, swap the element with its children and repeat last step.
+Swap with its smaller child in a min-heap and its larger child in a max-heap.
+void MinHeapFixdown(int Array[], int i, int n)
+{
+    int j, temp;
+    temp = Array[i];
+    j = 2 * i + 1;
+    while(j < n){
+        if(j + 1 < n && Array[j + 1] < Array[j]){
+            j++;
+        }
+        if(Array[j] >= temp){
+           break;
+        }
+        Array[i] = Array[j];    
+        i = j;
+        j = 2 * i + 1;
+    }
+    Array[i] = temp;
+}
+void MinHeapDeleteNumber(int Array[], int n)
+{
+      Swap(Array[0], Array[n - 1]);
+      MinHeapFixdown(Array, 0, n - 1);
+}
+
+Building:
+void MakeMinHeap(int Array[], int n)
+{
+     for(int i = n / 2 - 1; i >= 0; i--){
+         MinHeapFixdown(Array, i, n);
+     }  
+}
+
+HeapSort:
+void MinheapsortTodescendarray(int Array[], int n)
+{
+     for(int i = n - 1; i >= 1; i--){
+         Swap(aArray[i], Array[0]);
+         MinHeapFixdown(Array, 0, i);
+     }
+}
