@@ -82,8 +82,8 @@ int main()
 	    }  
             getchar();
 	}
-        for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= m; j++){
+        for(int i = 1; i <= row; i++){
+            for(int j = 1; j <= col; j++){
                 if(Map[i][j] == 'W'){
                     BFS(i,j);
                     ans++;
