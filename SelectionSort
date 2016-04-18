@@ -1,0 +1,26 @@
+/*
+Selection sort: this algorithm is stable and it takes O(n^2) comparisons.
+Select the smallest element in each step, after (n-1) steps, we will get the sorted array.
+Step i: get the smallest element arrya[j] in sub-array[i,n] and exchange array[i] with array[j]
+*/
+void swap(int *a, int *b)
+{
+    int temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;​
+}
+
+void SelectSort(vector &Array, int n)
+{
+    for(int i = 0; i < n-1; i++){
+        int min = i;
+        for(int j = i+1; j < n; j++){
+            if(Array[min] > Array[j]){
+               min = j;
+            }
+        }
+        if(min != i){
+           swap(Array[min], Array[i]);
+        }
+}
