@@ -62,7 +62,7 @@ void EnQueue(Queue *Q, int key)
     }
 }
 
-oid DeQueue(Queue *Q)
+void DeQueue(Queue *Q)
 {
     int tmp;
     if(Q->tail == Q->head){
