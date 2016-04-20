@@ -1,0 +1,87 @@
+/*
+A stack is an abstract data type that serves as a collection of elements.
+Operations:
+     push: adds an element to the stack
+     pop: removes the most recently added element that was not yet removed
+The push and pop operations occur only at the end of the stack.
+LIFO: last in and first out.
+*/
+stack<int> s; //create a null stack
+s.top(); //return the top of stack
+s.push(x); //add x to the top of stack
+s.pop(); //remove the top of stack
+s.empty(); //stack is null or not
+s.size(); //return the size of stack
+
+Example:
+    problem: http://poj.org/problem?id=1363
+    code:
+#include<iostream>
+#include<algorithm>
+#include<stack>
+#include<cstdio>
+using namespace std;
+#define N 1100
+int n;
+int a[N];
+//Memory:  192K		Time: 172MS
+bool IsOk()
+{
+    stack<int> stk;
+    int k = 1;
+	  for(int i = 1; i <= n; i++){
+	    	stk.push(i);
+	    	while(!stk.empty() && stk.top() == a[k]){
+            k++;
+            stk.pop();
+	    	 }
+	  }
+	  return stk.empty();
+}
+//Memory: 168K		Time: 63MS
+//use array will be faster
+bool IsOk()
+{
+    int mystack[N];
+    int num = 0;
+    int k = 1;
+    for(int i = 1; i <= n; i++){
+        mystack[++num] = i;  
+        while(num && a[k] == mystack[num]){       
+            num--;
+            k++;
+        }       
+    }
+    if(num){
+         return false;
+    }
+    else{
+        return true;   
+    }
+}
+int main()
+{
+    int m = 0;
+    scanf("%d",&n);
+    while(n){
+        if(m != 0){
+           printf("\n");
+        }
+        m++;
+        scanf("%d",&a[1]);
+        while(a[1]){
+            for(int i = 2; i <= n; i++){
+                scanf("%d",&a[i]);   
+            }
+            if(IsOk()){
+                printf("Yes\n");
+            }
+            else{
+                printf("No\n");   
+            }
+            scanf("%d",&a[1]);                   
+        }  
+        scanf("%d",&n);  
+    } 
+    return 0;   
+}
