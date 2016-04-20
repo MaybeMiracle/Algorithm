@@ -13,6 +13,94 @@ s.pop(); //remove the top of stack
 s.empty(); //stack is null or not
 s.size(); //return the size of stack
 
+#include <iostream>
+using namespace std;
+
+/***********************************/
+/*
+栈的链式存储结构实际上是一个单链表，叫链栈
+插入和删除操作只能在链栈的栈顶进行
+*/
+/***********************************/
+Array:
+#define MaxSize 100
+const int fir = -99999;
+typedef struct Stack{
+    int top;
+    int Array[MaxSize];
+}Stack;
+
+void InitStack(Stack S)
+{
+    S.top = fir;//S.top == fir means null
+}
+
+bool IsEmpty()
+{
+    if(S.top == fir){
+        return true;
+    }
+    else{
+       return false;
+    }
+}
+
+void Push(int key)
+{
+    S.top++;
+    S.Array[S.top] = key;
+}
+
+int Pop()
+{
+    S.top--;
+    return S.Array[S.top+1];
+}
+    
+LinkedList:
+#define MaxSize 100
+typedef struct Node
+{
+    int data;
+    struct Node *next;
+}LinkStack;
+
+InitQueue(LinkStack *S)
+{
+    S->next = NULL;
+    return S;
+}
+
+bool IsEmptyLinkStack(LinkStack S)
+{
+    return S->next == NULL ? true : false;
+}
+
+void PushLinkStack(LinkStack S, int key)
+{
+    LinkStack s;
+    s->data = key;
+    s->next = S->next;
+    S->next = s;    
+}
+
+int PopLinkStack(LinkStack S)
+{
+    LinkStack firstCell;
+    int topElem;
+    if ( IsEmptyLinkStack(S) ){
+        printf("LinkStack is empty!\n");
+        return NULL;
+    }
+    else{
+        firstCell = S->next;
+        S->next = firstCell->next;
+        topElem = firstCell->data;
+        delete firstCell;
+        return topElem;
+    }
+}
+
 Example:
     problem: http://poj.org/problem?id=1363
     code:
