@@ -1,0 +1,138 @@
+/*
+A queue is an abstract data type that serves as a collection of elements.
+Operations:
+     push: adds an element to the queue
+     pop: removes the firstly added element that was not yet removed
+FIFO: first in and first out.(like a train)
+*/
+queue<int> q; //create a null queue
+q.front(); //return the top of queue
+q.back(); //return the end of queue
+q.push(x); //add x to the top of queue
+q.pop(); //remove the top of queue
+q.empty(); //queue is null or not
+q.size(); //return the size of queue
+
+Array:
+const int size = 10;
+typedef struct queue
+{
+    int QueueSize;   //size of queue
+    int head, tail;  //indices of queue's head and tail
+    int *q;          //pointer of array's head
+}Queue;
+
+void InitQueue(Queue *Q)
+{
+    Q->QueueSize = size;
+    Q->q = (int *)malloc(sizeof(int) * Q->QueueSize); 
+    Q->tail = 0;
+    Q->head = 0;
+}
+
+bool IsQueueEmpty(Queue *Q)
+{
+    if(Q->head == Q->tail){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+bool IsQueueFull(Queue *Q)
+{
+    if((Q->tail+1) % Q->queuesize == Q->head){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
+void EnQueue(Queue *Q, int key)
+{
+    int tail = (Q->tail+1) % Q->QueueSize; 
+    if (tail == Q->head){
+        printf("the queue has been filled full!");
+    }
+    else{
+        Q->q[Q->tail] = key;
+        Q->tail = tail;
+    }
+}
+
+oid DeQueue(Queue *Q)
+{
+    int tmp;
+    if(Q->tail == Q->head){
+        printf("the queue is NULL\n");
+    }
+    else{
+        tmp = Q->q[Q->head];
+        Q->head = (Q->head+1) % Q->queuesize;
+    }
+}
+
+LinkedList:
+typedef struct node
+{
+    int data;
+    struct node *next;
+};
+typedef struct 
+{
+    struct node *front;
+    struct node *rear;
+}LinkQueue;
+ 
+InitQueue(LinkQueue *Q)
+{ 
+    Q->front = (struct node *)malloc(sizeof( struct node));
+    Q->rear = Q->front;
+    Q->front->next = NULL;
+}
+ 
+EnQueue(LinkQueue *Q, int e)
+{
+    struct node *p;
+    p = (struct node *)malloc(sizeof(struct node ));
+    p->data = e;
+    p->next = NULL;
+    Q->rear->next = p;
+    Q->rear=p; 
+}
+ 
+DeQueue(LinkQueue *Q)
+{ 
+    struct node *p;
+    if(Q->front == Q->rear){
+        printf("the queue is NULL\n");
+    }
+    else{
+        p = Q->front->next;
+        Q->front->next = p->next;
+        if(p->next = NULL){
+            Q->rear = Q->front;
+        }
+        free(p);
+    }
+}
+ 
+OutputQueue(LinkQueue *Q)
+{ 
+    struct node *p;
+    p = Q->front->next;
+    while(p != NULL){ 
+        printf("%d ",p->data);
+        p = p->next;
+    }
+}
+ 
+GetFront(LinkQueue *Q)
+{  
+    struct node *p;
+    p = Q->front->next;
+    printf("%d",p->data);
+}
+ 
