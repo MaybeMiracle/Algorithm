@@ -1,0 +1,117 @@
+/*
+A stack is monotonous.(increasing or decreasing)
+*/
+
+Problem:http://poj.org/problem?id=2796
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+using namespace std;
+
+#define N 100010
+
+int Array[N];
+int Left[N];
+int Stack[N];
+int top;
+__int64 Sum[N];
+
+int main()
+{
+    __int64 ans = -1,tmp,n;
+    int ll,rr;
+    scanf("%d",&n);
+    for(int i = 1; i <= n; i++){
+        scanf("%d", &Array[i]);
+        Sum[i] = Sum[i-1] + Array[i];
+    }
+    Array[++n] = -1;
+    for(int i = 1; i <= n; i++){
+        if(top == 0 || Array[i] > Array[Stack[top-1]]){
+            Stack[top++] = i;
+            Left[i] = i;
+            continue;
+        }
+
+        if(Array[i] == Array[Stack[top-1]]){
+            continue;
+        }
+        while(top >= 1 && Array[i] < Array[Stack[top-1]]){
+            top--;
+            tmp =  1LL * Array[Stack[top]] * (Sum[i-1] - Sum[Left[Stack[top]]-1]);
+            if(tmp > ans)
+                ll = Left[Stack[top]],rr = i - 1,ans = tmp;
+        }
+        Left[i] = Left[Stack[top]];
+        Stack[top++] = i;
+    }
+    printf("%I64d\n%d %d\n",ans,ll,rr);
+    return 0;
+}
+//Time Limit Exceeded, so array is faster
+#include<iostream>
+#include<algorithm>
+#include<stack>
+using namespace std;
+struct node{
+    int pre;
+	  int next;
+	  __int64 val;
+	  int id;
+	  __int64 sum;
+}Array[100010];
+int main()
+{
+	  int n;
+	  __int64 ans;
+	  int left;
+	  int right;
+	  while(cin>>n){
+	    	Array[0].sum = 0;
+		    for(int i = 1; i <= n; i++){
+		       cin>>Array[i].val;
+			     Array[i].pre = 1;
+			     Array[i].next = 1;
+		    	 Array[i].id = i;
+			     Array[i].sum = Array[i-1].sum + Array[i].val;
+		    }
+		    stack<node> st;
+		    st.push(Array[1]);
+		    ans = Array[1].val*Array[1].val;
+		    left = 1;
+		    right = 1;
+		    int num = 2;
+		    while(num <= n){
+			      while(!st.empty() && (st.top().val >= Array[num].val)){
+				       node top = st.top();
+				       Array[num].pre += top.pre;
+				       st.pop();
+				       if(!st.empty()){
+			           	 st.top().next += top.next;
+				       }
+				       if(ans < top.val*(Array[top.id + top.next - 1].sum - Array[top.id - top.pre].sum)){
+					         ans = top.val*(Array[top.id + top.next - 1].sum - Array[top.id - top.pre].sum);
+					         left = top.id - top.pre + 1;
+					         right =top.id + top.next - 1;
+			         }
+			     }
+			     st.push(Array[num]);
+			     num++;
+		    }
+	     	while(!st.empty()){
+		        node top = st.top();
+		        st.pop();
+		        if(!st.empty()){
+			          st.top().next += top.next;
+		        }
+		        if(ans < top.val*(Array[top.id + top.next - 1].sum - Array[top.id - top.pre].sum)){
+			          ans = top.val*(Array[top.id + top.next - 1].sum - Array[top.id - top.pre].sum);
+			          left = top.id - top.pre + 1;
+			          right = top.id + top.next - 1;
+		        }
+	    	}
+		    cout<<ans<<endl;
+		    cout<<left<<" "<<right;
+	   }
+	   return 0;
+}
