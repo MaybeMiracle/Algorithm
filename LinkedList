@@ -1,0 +1,123 @@
+/*
+A linked list is a linear collection of data elements, called nodes pointing to the
+next node by means of a pointer. It is a data structure consisting of a group of nodes 
+which together represent a sequence. And each node is composed of data and a reference
+(in other words, a link) to the next node in the sequence.
+Advantages:
+    Linked lists are a dynamic data structure, which can grow and be pruned, allocating 
+and deallocating memory while the program is running.
+    Insertion and deletion node operations are easily implemented in a linked list.
+    Linear data structures such as stacks and queues are easily executed with a linked list.
+    They can reduce access time and may expand in real time without memory overhead.
+Disadvantages:
+    They use more memory than arrays because of the storage used by their pointers.
+    Nodes in a linked list must be read in order from the beginning as linked lists are inherently sequential access.
+    Nodes are stored incontiguously, greatly increasing the time required to access individual elements within the list.
+    Difficulties arise in linked lists when it comes to reverse traversing. For instance, singly linked lists are cumbersome 
+to navigate backwards and while doubly linked lists are somewhat easier to read, memory is wasted in allocating space for 
+a back pointer.
+(from wikipedia)
+*/
+typedef struct _LINK_NODE
+{
+    int data;
+	  struct _LINK_NODE* next;
+}LINK_NODE;
+
+LINK_NODE* CreateLinkedlist(int value)
+{
+    LINK_NODE* LinkNode = NULL;
+  	LinkNode = (LINK_NODE*)malloc(sizeof(LINK_NODE));
+	
+  	LinkNode->data = value;
+	  LinkNode->next = NULL;
+	  return LinkNode;
+}
+
+void DeleteLinkedlist(LINK_NODE** pNode)
+{
+    LINK_NODE** pNext;
+    if(NULL == pNode || NULL == *pNode){
+        return ;
+    }
+		
+	  pNext = &(*pNode)->next;
+	  free(*pNode);
+	  delete_node(pNext);	
+}
+
+void Insert(LINK_NODE** pNode, LINK_NODE* pDataNode)
+{
+    if(NULL == *pNode){
+	      *pNode = pDataNode;
+	      return;
+	  }
+	  Insert(&(*pNode)->next, pDataNode);
+}
+
+void Insert(const LINK_NODE** pNode, int value)
+{
+    LINK_NODE* pDataNode;
+    if(NULL == *pNode){
+	      return;
+	  }
+		
+	  pDataNode = alloca_node(value);
+	  assert(NULL != pDataNode);
+	  Insert((LINK_NODE**)pNode, pDataNode);
+}
+
+void Delete(LINK_NODE** pNode, int value)
+{
+    LINK_NODE* pLinkNode;
+    if(NULL == (*pNode)->next){
+	      return;
+	  }
+	
+   	pLinkNode = (*pNode)->next;
+	  if(value == pLinkNode->data){
+	      (*pNode)->next = pLinkNode->next;
+		    free(pLinkNode);
+		}
+		else{
+	      Delete(&(*pNode)->next, value);
+	  }
+}
+
+void Delete(LINK_NODE** pNode, int value)
+{
+    LINK_NODE* pLinkNode;
+    if(NULL == pNode || NULL == *pNode){
+	    return;
+	  }
+
+    if(value == (*pNode)->data){
+	     pLinkNode = *pNode;
+		   *pNode = pLinkNode->next;
+		   free(pLinkNode);
+	  }		
+	
+	  Delete(pNode, value);
+}
+
+LINK_NODE* Find(const LINK_NODE* pLinkNode, int value)
+{
+    if(NULL == pLinkNode){
+	      return NULL;
+	  }
+	
+  	if(value == pLinkNode->data){
+	      return (LINK_NODE*)pLinkNode;
+	  }
+	
+	  return find_data(pLinkNode->next, value);
+}
+
+int Count(const LINK_NODE* pLinkNode)
+{
+    if(NULL == pLinkNode){
+	      return 0;
+	  }
+		
+	  return 1 + count_node(pLinkNode->next);
+}
