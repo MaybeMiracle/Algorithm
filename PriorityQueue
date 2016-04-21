@@ -1,0 +1,111 @@
+/*
+A priority queue is an abstract data type which is like a regular
+queue or stack data structure, but where additionally each element 
+has a priority associated with it. In a priority queue, an element 
+with high priority is served before an element with low priority. 
+If two elements have the same priority, they are served according 
+to their order in the queue.
+*/
+//int: element type; vector: default container; cmp: how to compare
+priority_queue<int, vector<int>, cmp>que;
+Example:
+struct cmp1{  
+    bool operator ()(int &a,int &b){  
+        return a > b; 
+    }  
+};  
+struct cmp2{  
+    bool operator ()(int &a,int &b){  
+        return a < b; 
+    }  
+};  
+priority_queue<int, vector<int>, cmp1>que1;//the first is the smallest
+priority_queue<int, vector<int>, cmp2>que2;//the first is the biggest
+
+priority_queue<int,vector<int>,greater<int> >que3;//the first is the smallest  
+priority_queue<int,vector<int>,less<int> >que4;//the first is the biggest
+priority_queue<int> que5 = priority_queue<int,vector<int>,less<int> >que5//default
+ 
+struct cmp1{  
+    int x;  
+    bool operator < (const cmp1 &a) const {  
+        return x > a.x;//the first is the smallest
+    }  
+};  
+struct cmp2{  
+    int x;  
+    bool operator < (const cmp2 &a) const {  
+        return x < a.x;//the first is the biggest 
+    }  
+};
+priority_queue<cmp1>que6;  
+priority_queue<cmp2>que7;
+
+Problem:http://poj.org/problem?id=2823
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<queue>
+#include<vector>
+using namespace std;
+#define N 1000010
+int Array[N];
+int OutMin[N];
+int OutMax[N];
+
+int CntMin = 0;
+int CntMax = 0;
+
+struct CmpMin
+{
+    bool operator()(const int a,const int b)
+    {
+        return Array[a] > Array[b];
+    }
+};
+struct CmpMax
+{
+    bool operator()(const int a,const int b)
+    {
+        return Array[a] < Array[b];
+    }
+};
+priority_queue <int, vector<int>, CmpMin> Qmin;
+priority_queue <int, vector<int>, CmpMax> Qmax;
+int main()
+{
+    int n,k;
+    scanf("%d%d",&n,&k);
+    if(k > n){
+        k = n;
+    }
+    for(int i = 1; i <= n; i++){
+        scanf("%d", &Array[i]);
+    }
+    for(int i = 1; i <= k; i++){
+        Qmin.push(i);
+        Qmax.push(i);
+    }
+    OutMin[CntMin++] = Array[Qmin.top()];
+    OutMax[CntMax++] = Array[Qmax.top()];
+    for(int i = k+1; i <= n; i++){
+        Qmin.push(i);
+        Qmax.push(i);
+        while(i - Qmin.top() >= k){
+            Qmin.pop();
+        }
+        OutMin[CntMin++] = Array[Qmin.top()];
+        while(i - Qmax.top() >= k){
+            Qmax.pop();
+        }
+        OutMax[CntMax++] = Array[Qmax.top()];
+    }
+    
+    for(int i = 0; i <= (n-k); i++){
+        printf("%d%c", OutMin[i], (i < n - k) ? ' ' : '\n'); 
+    }
+    for(int i = 0; i <= (n-k); i++){
+        printf("%d%c", OutMax[i], (i < n - k) ? ' ' : '\n'); 
+    }
+    return 0;
+}
