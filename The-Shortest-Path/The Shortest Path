@@ -1,0 +1,20 @@
+/*
+The shortest path problem can be defined for graphs whether undirected, directed, or mixed. 
+It is defined here for undirected graphs; for directed graphs the definition of path requires 
+that consecutive vertices be connected by an appropriate directed edge.
+
+Two vertices are adjacent when they are both incident to a common edge.
+
+The problem is also sometimes called the single-pair shortest path problem, to distinguish 
+it from the following variations:
+
+The single-source shortest path problem, in which we have to find shortest paths from a source 
+vertex v to all other vertices in the graph.
+The single-destination shortest path problem, in which we have to find shortest paths from all 
+vertices in the directed graph to a single destination vertex v. This can be reduced to the 
+single-source shortest path problem by reversing the arcs in the directed graph.
+The all-pairs shortest path problem, in which we have to find shortest paths between every pair 
+of vertices v, v' in the graph.
+These generalizations have significantly more efficient algorithms than the simplistic approach 
+of running a single-pair shortest path algorithm on all relevant pairs of vertices.
+*/
