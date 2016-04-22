@@ -1,0 +1,41 @@
+/*
+Kruskal algorithm (O(eloge)): compared with prim, kruskal adds the minimum-weight edge that at least 
+one vertice of the edge is not yet in the tree.
+*/
+const int NodeNumMax = 20000;
+const int EdgeNumMax = 50000;
+ 
+struct Edge{
+    int u, v, w;
+    bool operator < (const Edge a)const 
+    { 
+        return w<a.w; 
+    }; 
+}edge[EdgeNumMax];
+int n, m;
+int pa[NodeNumMax];
+ 
+void MakeSet(){
+    for(int x = 0; x < n; x++)
+        pa[x] = x;
+}
+ 
+int FindSet(int x){
+    if(x != pa[x]){
+        pa[x] = FindSet(pa[x]);
+    }
+    return pa[x];
+}
+ 
+void Kruskal(){
+    MakeSet();
+    sort(edge, edge + m);
+    for(i = 0; i < m; i ++){
+        int x = FindSet(edge[i].u);
+        int y = FindSet(edge[i].v);
+        if(x != y){
+            pa[y] = x;
+            cout<<edge[i].u<<" "<<edge[i].v<<endl;
+        }
+    }
+}
