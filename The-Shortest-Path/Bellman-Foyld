@@ -16,7 +16,7 @@ of vertices with correctly calculated distances grows, from which it follows tha
 will have their correct distances. This method allows the Bellman–Ford algorithm to be applied to a wider 
 class of inputs than Dijkstra.
 
-Bellman–Ford runs in O(|V|\cdot |E|) time, where |V| and |E| are the number of vertices and edges respectively.
+Bellman–Ford runs in O(|V|*|E|) time, where |V| and |E| are the number of vertices and edges respectively.
 */
 const int inf = 999999;
 struct Edge 
