@@ -1,0 +1,69 @@
+/*
+The Shortest Path Faster Algorithm (SPFA) is an improvement of the Bellman–Ford 
+algorithm which computes single-source shortest paths in a weighted directed graph. 
+The algorithm is believed to work well on random sparse graphs and is particularly 
+suitable for graphs that contain negative-weight edges.
+
+Given a weighted directed graph G = (V, E) and a source vertex s, the SPFA algorithm 
+finds the shortest path from s to each vertex v in the graph. The length of the shortest 
+path from s to v is stored in d(v) for each vertex v.
+*/
+
+#define maxn 50010
+bool vis[maxn];
+int v[maxn];
+int head[maxn];
+int pre[maxn];
+int dis[maxn];
+const int inf = 999999;
+int edgeNum;
+int n,m;
+struct edge
+{
+	 int s, v;
+	 int next;
+}edge[200010];
+
+void addEdge(int s, int e, int v)
+{
+	 edge[edgeNum].s = s;
+	 edge[edgeNum].v = v;
+	 edge[edgeNum].next = head[e];
+	 head[e] = edgeNum;
+	 edgeNum++;
+
+	 edge[edgeNum].s = e;
+	 edge[edgeNum].v = v;
+	 edge[edgeNum].next = head[s];
+	 head[s] = edgeNum;
+	 edgeNum++;
+}
+
+void SPFA(int s)
+{
+    memset(head, -1, sizeof(head));
+	  memset(vis, false, sizeof(vis));
+	  for(int i = 0; i <= n; i++){
+	     dis[i] = inf;
+	  }
+	  dis[1] = 0;
+	  vis[s] = true;
+    int front = 0;
+	  int hea = 0;
+    pre[hea++] = s;
+	  while(hea != front){
+		   int now = pre[front++];
+		   vis[now] = true;
+		   for(int j = head[now]; j != -1; j = edge[j].next){
+		     	int st = edge[j].s;
+			    if(dis[st] > dis[now] + edge[j].v){
+			        dis[st] = dis[now] + edge[j].v;
+				      if(!vis[st]){
+				         vis[st] = true;
+				         pre[hea++] = st;
+				      }
+			    }
+		   }
+		   vis[now] = false;
+	  }
+}
