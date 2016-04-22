@@ -1,0 +1,38 @@
+/*
+Prim algorithm (O(n^2)): it is a greedy algorithm. The algorithm operates by building a tree with an 
+arbitrary starting vertex, then at each step we will find the minimum-weight edge that connect
+the tree to vertices and one vertice of the edge is not yet in the tree.
+*/
+const int INF = 10000000;
+void Prim(int u)  //vertex u is the root
+{  
+    int min;  
+    memset(LowCost, 0, sizeof(LowCost));
+    
+    for(int i = 1; i <= n; i++){  
+       if(i != u){  
+           LowCost[i] = Weight[u][i];  //minimal weight from vertex i to tree
+       }
+    }
+    
+    Visit[u] = true;  
+    
+    for(int i = 1; i <= n; i++){  
+        min = INF;  //current minimal weight
+        for(int j = 1; j <= n; j++){  
+            if(LowCost[j] < min && !Visit[j]){  
+                min = LowCost[j];  
+                k = j; //the cloest vertex to the tree
+            }  
+        }
+        
+        sum += min; //the weight of MST  
+        Visit[k] = true;  
+        
+        for(int j = 1; j <= n; j++) { 
+            if(LowCost[j] > Weight[k][j]){  
+                 LowCost[j] = Weight[k][j];  //update minimal weight from vertex i to root
+            }
+        }
+    }  
+} 
