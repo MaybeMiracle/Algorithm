@@ -1,0 +1,40 @@
+/*
+The Floyd–Warshall algorithm compares all possible paths through the graph between each pair of vertices. 
+It is able to do this with Θ(| V |3) comparisons in a graph. This is remarkable considering that there may 
+be up to Ω(| V |2) edges in the graph, and every combination of edges is tested. It does so by incrementally 
+improving an estimate on the shortest path between two vertices, until the estimate is optimal.
+
+Consider a graph G with vertices V numbered 1 through N. Further consider a function shortestPath(i, j, k) 
+that returns the shortest possible path from i to j using vertices only from the set {1,2,...,k} as intermediate 
+points along the way. Now, given this function, our goal is to find the shortest path from each i to each j using 
+only vertices 1 to k + 1.
+
+For each of these pairs of vertices, the true shortest path could be either
+(1) a path that only uses vertices in the set {1, ..., k}
+or
+(2) a path that goes from i to k + 1 and then from k + 1 to j.
+We know that the best path from i to j that only uses vertices 1 through k is defined by shortestPath(i, j, k), 
+and it is clear that if there were a better path from i to k + 1 to j, then the length of this path would be the 
+concatenation of the shortest path from i to k + 1 (using vertices in {1, ..., k}) and the shortest path from {k + 1} 
+to j (also using vertices in {1, ..., k}).
+
+If Path(i, j) is the weight of the edge between vertices i and j, we can define shortestPath(i, j, k + 1) in terms of 
+the following recursive formula: the base case is shortestPath(i, j, 0) = Path(i, j)
+and the recursive case is shortestPath(i,j,k+1) = min(shortestPath(i,j,k), shortestPath(i,k+1,k) + shortestPath(k+1,j,k))
+This formula is the heart of the Floyd–Warshall algorithm. The algorithm works by first computing shortestPath(i, j, k) 
+for all (i, j) pairs for k = 1, then k = 2, etc. This process continues until k = N, and we have found the shortest path 
+for all (i, j) pairs using any intermediate vertices.
+*/
+void Floyd() 
+{ 
+    for(int k = 1; k <= n; k++){ 
+        for(int i = 1; i <= n; i++){ 
+            for(int j = 1; j <= n; j++){ 
+                if(i!=j && Map[i][j] > Map[i][k] + Map[k][j]){ 
+                    Map[i][j] = Map[i][k] + Map[k][j]; 
+                    Path[i][j] = Path[k][j]; 
+                } 
+            } 
+        } 
+    } 
+}
