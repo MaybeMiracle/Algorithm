@@ -1,0 +1,10 @@
+/*
+Minimal spanning tree(minimal weight spanning tree): A minimal spanning tree is a spanning 
+tree of a connected, undirected graph. It connects all the vertices together with the minial 
+total weighting for its edges.
+*/
+
+Comparison between Prim and Kruskal: 
+For 1000 nodes and 50000 edges:
+          Memory: prim needs a 1000*1000 array and kruskal needs a 50000 array
+          Time: prim takes 1000*1000 and kruskal take 50000*log(50000)
