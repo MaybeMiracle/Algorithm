@@ -1,0 +1,88 @@
+/*
+Edmonds–Karp algorithm is an implementation of the Ford–Fulkerson method for computing 
+the maximum flow in a flow network in O(V*E^2) time.
+
+The algorithm is identical to the Ford–Fulkerson algorithm, except that the search order 
+when finding the augmenting path is defined. The path found must be a shortest path that 
+has available capacity. This can be found by a breadth-first search, as we let edges have 
+unit length. The running time of O(V*E^2) is found by showing that each augmenting path 
+can be found in O(E) time, that every time at least one of the E edges becomes saturated 
+(an edge which has the maximum possible flow), that the distance from the saturated edge 
+to the source along the augmenting path must be longer than last time it was saturated, 
+and that the length is at most V. Another property of this algorithm is that the length 
+of the shortest augmenting path increases monotonically.
+
+https://www.cs.umd.edu/class/spring2011/cmsc651/lec12.pdf.
+This pdf is helpful to understand Edmonds–Karp algorithm.
+*/
+
+Problem: http://poj.org/problem?id=1273
+
+Code:
+#include<iostream>  
+#include<algorithm>
+#include<cstring>
+#include<queue>
+using namespace std;
+
+#define maxn 210
+const int inf = 100000000;
+int record[maxn];
+int Left[maxn];
+int cap[maxn][maxn];
+int flow[maxn][maxn];
+int t,n,m;
+
+int min(int x, int y)
+{
+	   if(x > y){
+	       return y;
+	   }
+	   return x;
+}
+
+void kp(int s)
+{	
+	  int ans = 0;	
+    queue<int>qu;
+	  while(1){
+	  	  memset(Left, 0, sizeof(Left));
+	      qu.push(s);
+	      Left[s] = inf;		
+		    while(!qu.empty()){
+			      int u = qu.front();
+		        qu.pop();
+			      for(int i = 1; i <= m; i++){
+				        if(!Left[i] && cap[u][i] - flow[u][i] > 0){
+					          Left[i] = min(Left[u], cap[u][i] - flow[u][i]);
+					          record[i] = u;
+					          qu.push(i);
+				        }
+			      }						
+		    }
+		    if(Left[m] == 0){
+		        break;
+		    }
+		    ans += Left[m];
+		    for(int i = m; i != s; i = record[i]){
+		        flow[record[i]][i] += Left[m];
+			      flow[i][record[i]] -= Left[m];
+		    }
+	  }
+	  cout<<ans<<endl;
+}
+
+int main()
+{
+	  int s,e,c;
+	  while(cin>>n>>m){
+		   memset(cap, 0, sizeof(cap));
+		   memset(flow, 0, sizeof(flow));
+		   while(n--){
+		       cin>>s>>e>>c;
+		       cap[s][e] += c;
+		   }
+	     kp(1);
+	  }
+	  return 0;
+}
